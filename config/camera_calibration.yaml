@@ -1,0 +1,40 @@
+# Camera Calibration Parameters
+# Run calibration script to populate these values
+
+camera_matrix: null
+# Example:
+# [[focal_x, 0, center_x],
+#  [0, focal_y, center_y],
+#  [0, 0, 1]]
+
+distortion_coefficients: null
+# Example: [k1, k2, p1, p2, k3]
+
+# Perspective transformation matrix
+perspective_matrix: null
+
+# Reference points for perspective transformation
+# These should be measured on the actual pitch
+reference_points:
+  # World coordinates (in meters from umpire)
+  world:
+    - [0, 0, 0]  # Umpire position
+    - [20.12, 0, 0]  # Far stumps
+    - [20.12, 1, 0]  # Far stumps right
+    - [0, 1, 0]  # Near stumps right
+  
+  # Image coordinates (in pixels) - to be filled during calibration
+  image:
+    - null
+    - null
+    - null
+    - null
+
+# Pixel to real-world conversion
+pixel_to_meter: null
+
+# Calibration metadata
+calibration_date: null
+calibration_location: null
+camera_model: null
+notes: ""

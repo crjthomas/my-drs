@@ -1,0 +1,11 @@
+# Models Directory
+
+Place your trained YOLOv8 models here.
+
+Expected file: `cricket_detector.pt`
+
+If you don't have a trained model, the system will fall back to classical computer vision methods.
+
+## Training Your Own Model
+
+See `docs/TECHNICAL_GUIDE.md` for instructions on training a custom YOLOv8 model for cricket object detection.

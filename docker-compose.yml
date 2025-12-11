@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  lbw-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: lbw-decision-system:latest
+    container_name: lbw-system
+    
+    # GPU support (uncomment if using NVIDIA GPU)
+    # runtime: nvidia
+    # environment:
+    #   - NVIDIA_VISIBLE_DEVICES=all
+    
+    environment:
+      - VIDEO_SOURCE=${VIDEO_SOURCE:-0}
+      - USE_GPU=${USE_GPU:-false}
+      - DEVICE=${DEVICE:-cpu}
+      - SAVE_VIDEO=${SAVE_VIDEO:-false}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    
+    volumes:
+      # Mount configuration
+      - ./config:/app/config:ro
+      
+      # Mount output directories
+      - ./logs:/app/logs
+      - ./output:/app/output
+      
+      # Mount models
+      - ./models:/app/models:ro
+      
+      # Mount video files if needed
+      - ./data:/app/data:ro
+    
+    # Device access for camera
+    devices:
+      - /dev/video0:/dev/video0
+    
+    # Network mode for display (if X11 forwarding)
+    network_mode: host
+    
+    # X11 forwarding for display
+    environment:
+      - DISPLAY=${DISPLAY:-:0}
+    volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+    
+    # Restart policy
+    restart: unless-stopped
+    
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 4G
+        reservations:
+          cpus: '2'
+          memory: 2G
+
+  # Optional: Add monitoring service
+  # monitoring:
+  #   image: prom/prometheus:latest
+  #   container_name: lbw-monitoring
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   restart: unless-stopped

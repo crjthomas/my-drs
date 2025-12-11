@@ -1,0 +1,40 @@
+# Core dependencies
+opencv-python==4.8.1.78
+opencv-contrib-python==4.8.1.78
+numpy==1.24.3
+scipy==1.11.4
+
+# Deep Learning
+torch==2.1.0
+torchvision==0.16.0
+ultralytics==8.0.221  # YOLOv8
+
+# Video processing
+imageio==2.31.6
+imageio-ffmpeg==0.4.9
+
+# Data handling
+pandas==2.1.4
+pyyaml==6.0.1
+
+# Logging and monitoring
+loguru==0.7.2
+python-json-logger==2.0.7
+
+# API and Web (for future extensions)
+fastapi==0.104.1
+uvicorn==0.24.0
+websockets==12.0
+
+# Utilities
+python-dotenv==1.0.0
+tqdm==4.66.1
+click==8.1.7
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
+
+# Production
+gunicorn==21.2.0
