@@ -1,0 +1,137 @@
+# LBW Decision System Configuration
+
+# Video Input Settings
+video:
+  source: 0  # 0 for webcam, or path to video file
+  width: 1920
+  height: 1080
+  fps: 60
+  buffer_size: 30  # frames to keep in buffer
+
+# Object Detection Settings
+detection:
+  model_path: "models/cricket_detector.pt"
+  confidence_threshold: 0.5
+  nms_threshold: 0.4
+  device: "cuda"  # cuda or cpu
+  
+  # Object classes
+  classes:
+    ball: 0
+    batsman: 1
+    stumps: 2
+    pads: 3
+    bat: 4
+    
+  # Detection regions (relative coordinates 0-1)
+  roi:
+    enabled: true
+    x_min: 0.1
+    x_max: 0.9
+    y_min: 0.2
+    y_max: 0.9
+
+# Ball Tracking Settings
+tracking:
+  # Kalman filter parameters
+  kalman:
+    process_noise: 0.01
+    measurement_noise: 0.1
+  
+  # Tracking thresholds
+  max_frames_to_skip: 10
+  min_track_length: 5
+  distance_threshold: 50  # pixels
+  
+  # Ball detection
+  ball_size_range: [5, 30]  # min and max radius in pixels
+  ball_color_hsv:
+    lower: [0, 100, 100]
+    upper: [10, 255, 255]
+
+# Trajectory Prediction
+trajectory:
+  polynomial_degree: 2
+  extrapolation_frames: 30
+  gravity: 9.81  # m/s^2
+  air_resistance: 0.47  # drag coefficient
+  ball_mass: 0.16  # kg
+  ball_radius: 0.036  # meters
+
+# LBW Decision Logic
+lbw:
+  # Pitch map (calibration required)
+  pitch_length: 20.12  # meters
+  stump_height: 0.71  # meters
+  stump_width: 0.23  # meters
+  
+  # Decision thresholds
+  impact_threshold: 0.05  # meters - how close to pad
+  line_threshold: 0.1  # meters - margin for in-line decision
+  pitching_threshold: 0.05  # meters
+  wicket_margin: 0.02  # meters - margin for hitting wickets
+  
+  # Umpire's call margins
+  umpires_call:
+    impact: 0.15  # meters
+    wicket: 0.15  # meters
+    pitching: 0.10  # meters
+  
+  # Minimum confidence for decision
+  min_confidence: 0.7
+
+# Camera Calibration
+calibration:
+  enabled: true
+  calibration_file: "config/camera_calibration.yaml"
+  
+  # Perspective transformation
+  perspective:
+    enabled: true
+    reference_points: 4  # number of reference points needed
+  
+  # Distance estimation
+  pixel_to_meter_ratio: 0.01  # will be calculated during calibration
+
+# Processing Settings
+processing:
+  use_gpu: true
+  num_threads: 4
+  queue_size: 10
+  
+  # Frame skip for performance
+  process_every_n_frames: 1
+  
+  # Memory management
+  max_memory_mb: 4096
+
+# Output Settings
+output:
+  display: true
+  save_video: false
+  output_path: "output/"
+  
+  # Visualization
+  visualization:
+    show_detections: true
+    show_trajectory: true
+    show_decision: true
+    overlay_transparency: 0.3
+  
+  # Logging
+  log_decisions: true
+  log_path: "logs/"
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+
+# Performance Monitoring
+monitoring:
+  enabled: true
+  fps_display: true
+  latency_tracking: true
+  resource_monitoring: true
+
+# Safety and Validation
+validation:
+  sanity_checks: true
+  frame_validation: true
+  trajectory_validation: true
